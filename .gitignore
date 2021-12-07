@@ -1,3 +1,5 @@
 tdlib
 __pycache__
 .env
+dist
+pywtdlib.egg-info

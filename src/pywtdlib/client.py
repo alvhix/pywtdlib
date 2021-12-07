@@ -1,6 +1,5 @@
 import logging
 from typing import Any, Callable, Dict, Optional
-from telegram import VERSION
 from os import environ
 from dotenv import load_dotenv
 from getpass import getpass
@@ -31,7 +30,7 @@ class Client:
         self.use_secret_chats = use_secret_chats
         self.system_language = "en"
         self.device_model = "pywtdlib"
-        self.app_version = VERSION
+        self.app_version = "0.0.1"
         self.enable_storage_optimizer = enable_storage_optimizer
         self.authorized = False
         self.database_directory = "tdlib"
