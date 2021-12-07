@@ -1,0 +1,58 @@
+# Telegram Forwarder App
+
+### Description
+
+The pywtdlib (Python Wrapper TDlib) is a simple synchronous Python wrapper that makes you easy to create new Python Telegram clients.
+
+### Installation
+
+1. By pip3
+
+```python
+pip3 install pywtdlib
+```
+
+2. By Docker
+
+```
+docker pull pywtdlib:latest
+```
+
+### Setup
+
+This project depends on [TDLib](https://github.com/tdlib/td). TDLib is the official cross-platform library for building Telegram clients written in C++.
+
+##### Example:
+
+This wrapper is so easy to use, for example the following code prints every new message that is received in your Telegram account.
+
+```python
+from wrapper.client import Client
+
+# 1. instantiate the telegram client (put your API_ID and API_HASH)
+tg = Client(api_id=1234567, api_hash="f10123h41l142jl134nngnl143543lep")
+
+# 2. define an update handler (every time an update is received, it will execute it)
+def print_messages(event):
+    if event["@type"] == Client.NEW_MESSAGE:
+        print(event)
+
+
+# 3. add the update handler
+tg.set_update_handler(print_messages)
+
+# 4. start the client (press CTRL + C to stop)
+tg.start()
+```
+
+### Libraries
+
+In the _lib/_ folder are located the binaries for Windows and Linux. If you need other binaries or you want to build by your own, go to the [TDLib build page](https://tdlib.github.io/td/build.html).
+
+### Logs
+
+Support for basic logging
+
+### Issues
+
+If you detect a [bug](.github/ISSUE_TEMPLATE/bug_report.md) or you have a [suggestion](.github/ISSUE_TEMPLATE/feature_request.md), open a ticket with the corresponding template.
