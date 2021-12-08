@@ -1,15 +1,18 @@
+import pathlib
 import setuptools
+from pywtdlib import __version__
 
-with open("README.md", "r", encoding="utf-8") as fh:
-    long_description = fh.read()
+HERE = pathlib.Path(__file__).parent
+
+README = (HERE / "README.md").read_text()
 
 setuptools.setup(
     name="pywtdlib",
-    version="0.0.2",
+    version=__version__,
     author="alvhix",
     author_email="alvhix@gmail.com",
     description="A simple Python TDLib wrapper",
-    long_description=long_description,
+    long_description=README,
     long_description_content_type="text/markdown",
     url="https://github.com/alvhix/pywtdlib",
     project_urls={
@@ -20,7 +23,10 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    package_dir={"": "src"},
-    packages=setuptools.find_packages(where="src"),
+    packages=["pywtdlib"],
+    package_data={
+        "pywtdlib": ["lib/linux/AMD64/*", "lib/linux/armv7l/*", "lib/windows/AMD64/*"]
+    },
+    install_requires=["python-dotenv"],
     python_requires=">=3.6",
 )

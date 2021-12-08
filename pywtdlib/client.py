@@ -1,4 +1,6 @@
 import logging
+import os
+from pywtdlib import __version__
 from typing import Any, Callable, Dict, Optional
 from os import environ
 from dotenv import load_dotenv
@@ -30,7 +32,7 @@ class Client:
         self.use_secret_chats = use_secret_chats
         self.system_language = "en"
         self.device_model = "pywtdlib"
-        self.app_version = "0.0.1"
+        self.app_version = __version__
         self.enable_storage_optimizer = enable_storage_optimizer
         self.authorized = False
         self.database_directory = "tdlib"

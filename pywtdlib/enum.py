@@ -1,3 +1,7 @@
+class Version:
+    VERSION: str = "0.0.5"
+
+
 class AuthorizationState(enumerate):
     AUTHORIZATION: str = "updateAuthorizationState"
     WAIT_CODE: str = "authorizationStateWaitCode"
