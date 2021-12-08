@@ -225,4 +225,4 @@ class Client:
 
         except KeyboardInterrupt:
             self.tdjson.stop()
-            self.logger.info("Execution stopped by the user\n")
+            self.logger.info("Execution stopped by the user")

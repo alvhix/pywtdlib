@@ -2,7 +2,7 @@
 
 ### Description
 
-A Python Wrapper TDLib (pywtdlib) is a simple synchronous Python wrapper that makes you easy to create new Python Telegram clients.
+A simple Python TDLib Wrapper (pywtdlib) that makes you easy to create new Python Telegram clients.
 
 ### Installation
 
@@ -10,12 +10,6 @@ A Python Wrapper TDLib (pywtdlib) is a simple synchronous Python wrapper that ma
 
 ```python
 pip3 install pywtdlib
-```
-
-2. By Docker
-
-```
-docker pull pywtdlib
 ```
 
 ### Setup
