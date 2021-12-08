@@ -185,9 +185,7 @@ class Client:
     ) -> None:
         self.update_handler = update_handler
 
-    def set_routine_handler(
-        self, routine_handler: Callable[[Dict[Any, Any]], None]
-    ) -> None:
+    def set_routine_handler(self, routine_handler: Callable[[None], None]) -> None:
         self.routine_handler = routine_handler
 
     def set_error_handler(
@@ -214,7 +212,7 @@ class Client:
                         self.error_handler(event)
 
                 if hasattr(self, "routine_handler"):
-                    self.routine_handler(event)
+                    self.routine_handler()
 
         except KeyboardInterrupt:
             self.tdjson.stop()

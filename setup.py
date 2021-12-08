@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pywtdlib",
-    version="0.0.1",
+    version="0.0.2",
     author="alvhix",
     author_email="alvhix@gmail.com",
     description="A simple Python TDLib wrapper",

@@ -28,13 +28,14 @@ This wrapper is so easy to use, for example the following code prints every new 
 
 ```python
 from wrapper.client import Client
+from wrapper.enum import Update
 
 # 1. instantiate the telegram client (put your API_ID and API_HASH)
 tg = Client(api_id=1234567, api_hash="f10123h41l142jl134nngnl143543lep")
 
 # 2. define an update handler (every time an update is received, it will execute it)
 def print_messages(event):
-    if event["@type"] == Client.NEW_MESSAGE:
+    if event["@type"] == Update.NEW_MESSAGE:
         print(event)
 
 
