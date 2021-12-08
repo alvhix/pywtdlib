@@ -27,6 +27,5 @@ setuptools.setup(
     package_data={
         "pywtdlib": ["lib/linux/AMD64/*", "lib/linux/armv7l/*", "lib/windows/AMD64/*"]
     },
-    install_requires=["python-dotenv"],
     python_requires=">=3.6",
 )
