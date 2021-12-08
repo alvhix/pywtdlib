@@ -1,9 +1,6 @@
 import logging
-import os
 from pywtdlib import __version__
 from typing import Any, Callable, Dict, Optional
-from os import environ
-from dotenv import load_dotenv
 from getpass import getpass
 from pywtdlib.enum import AuthorizationState, Update
 from pywtdlib.tdjson import TdJson
@@ -24,7 +21,6 @@ class Client:
         verbosity: Optional[int] = 1,
     ) -> None:
         self.logger = logging.getLogger(__name__)
-        load_dotenv()
 
         # initial parameters
         self.api_id = api_id
@@ -95,7 +91,6 @@ class Client:
     def log_error(self, event: Dict[Any, Any]) -> None:
         event_encoded = str(event).encode("utf-8")
         self.logger.error(event_encoded)
-        print(event_encoded)
 
     def authenticate_user(self, event: Dict[Any, Any]) -> None:
         # process authorization states
