@@ -1,3 +1,4 @@
+from os import environ
 from pywtdlib.client import Client
 from pywtdlib.enum import Update
 import logging
@@ -11,7 +12,7 @@ logging.basicConfig(
 )
 
 # 1. instantiate the telegram client (put your API_ID and API_HASH)
-tg = Client()
+tg = Client(api_id=environ["API_ID"], api_hash=environ["API_ID"])
 
 # 2. define an update handler (every time an update is received, it will execute it)
 # this will print in console every new message received
