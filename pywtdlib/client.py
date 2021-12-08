@@ -12,11 +12,13 @@ from pywtdlib.tdjson import TdJson
 class Client:
     def __init__(
         self,
-        api_id: Optional[int] = None,
-        api_hash: Optional[str] = None,
-        use_test_dc: Optional[bool] = False,
+        api_id: int,
+        api_hash: str,
         use_file_database: Optional[bool] = False,
+        use_chat_info_database: Optional[bool] = False,
+        use_message_database: Optional[bool] = False,
         use_secret_chats: Optional[bool] = False,
+        use_test_dc: Optional[bool] = False,
         enable_storage_optimizer: Optional[bool] = True,
         wait_timeout: Optional[int] = 1,
         verbosity: Optional[int] = 1,
@@ -25,11 +27,13 @@ class Client:
         load_dotenv()
 
         # initial parameters
-        self.api_id = environ["API_ID"] if api_id is None else api_id
-        self.api_hash = environ["API_HASH"] if api_hash is None else api_hash
-        self.use_test_dc = use_test_dc
+        self.api_id = api_id
+        self.api_hash = api_hash
         self.use_file_database = use_file_database
+        self.use_chat_info_database = use_chat_info_database
+        self.use_message_database = use_message_database
         self.use_secret_chats = use_secret_chats
+        self.use_test_dc = use_test_dc
         self.system_language = "en"
         self.device_model = "pywtdlib"
         self.app_version = __version__
@@ -111,8 +115,11 @@ class Client:
                     {
                         "@type": "setTdlibParameters",
                         "parameters": {
+                            "use_test_dc": self.use_test_dc,
                             "database_directory": self.database_directory,
                             "use_file_database": self.use_file_database,
+                            "use_chat_info_database": self.use_chat_info_database,
+                            "use_message_database": self.use_message_database,
                             "use_secret_chats": self.use_secret_chats,
                             "api_id": self.api_id,
                             "api_hash": self.api_hash,
