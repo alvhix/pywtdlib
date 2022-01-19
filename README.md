@@ -34,7 +34,7 @@ logging.basicConfig(
     format="%(asctime)s [%(filename)s:%(lineno)d]|%(levelname)s|%(message)s",
 )
 
-# 1. instantiate the telegram client (put your API_ID and API_HASH)
+# 1. instantiate the telegram client (put your API_ID and API_HASH from https://my.telegram.org/apps)
 tg = Client(api_id=environ["API_ID"], api_hash=environ["API_HASH"])
 
 # 2. define an update handler (every time an update is received, it will execute it)
