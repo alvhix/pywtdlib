@@ -13,16 +13,16 @@ class TdJson:
     ) -> None:
         self.logger = logging.getLogger(__name__)
 
+        extension = ""
         if platform.system() == "Windows":
-            if platform.machine() == "AMD64":
-                _lib = "lib\\windows\\AMD64\\tdjson.dll"
+            extension = "dll"
         elif platform.system() == "Linux":
-            if platform.machine() == "AMD64":
-                _lib = "lib/linux/AMD64/libtdjson.so"
-            elif platform.machine() == "armv7l":
-                _lib = "lib/linux/armv7l/libtdjson.so"
+            extension = "so"
 
-        tdlib_path = path.join(path.dirname(__file__), _lib)
+        tdlib_path = path.join(
+            path.dirname(__file__),
+            f"lib/{platform.system()}/{platform.machine()}/libtdjson.{extension}",
+        )
 
         # load shared library
         _tdjson = CDLL(tdlib_path)

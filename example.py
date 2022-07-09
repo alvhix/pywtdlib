@@ -1,7 +1,11 @@
 from os import environ
+
+from regex import F
 from pywtdlib.client import Client
 from pywtdlib.enum import Update
 import logging
+import keyboard
+from dotenv import load_dotenv
 
 # (optional) set some logging to see what is happening under the hood
 logging.basicConfig(
@@ -11,6 +15,7 @@ logging.basicConfig(
     format="%(asctime)s [%(filename)s:%(lineno)d]|%(levelname)s|%(message)s",
 )
 
+load_dotenv()
 # 1. instantiate the telegram client (put your API_ID and API_HASH)
 tg = Client(api_id=environ["API_ID"], api_hash=environ["API_HASH"])
 
@@ -24,5 +29,5 @@ def print_messages(event):
 # 3. add the update handler
 tg.set_update_handler(print_messages)
 
-# 4. start the client (press CTRL + C to stop)
+# 4. start the client (CTRL + C to stop)
 tg.start()
