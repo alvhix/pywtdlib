@@ -1,12 +1,12 @@
 import pathlib
-import setuptools
+from setuptools import setup, find_packages
 from pywtdlib import __version__
 
 HERE = pathlib.Path(__file__).parent
 
 README = (HERE / "README.md").read_text()
 
-setuptools.setup(
+setup(
     name="pywtdlib",
     version=__version__,
     author="alvhix",
@@ -23,9 +23,11 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    packages=["pywtdlib"],
+    packages=find_packages(),
     package_data={
-        "pywtdlib": ["lib/linux/AMD64/*", "lib/linux/armv7l/*", "lib/windows/AMD64/*"]
+        "pywtdlib": [
+            "lib/*",
+        ]
     },
     python_requires=">=3.6",
 )
