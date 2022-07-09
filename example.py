@@ -1,10 +1,8 @@
 from os import environ
 
-from regex import F
 from pywtdlib.client import Client
 from pywtdlib.enum import Update
 import logging
-import keyboard
 from dotenv import load_dotenv
 
 # (optional) set some logging to see what is happening under the hood
