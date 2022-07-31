@@ -24,10 +24,6 @@ setup(
         "Operating System :: OS Independent",
     ],
     packages=find_packages(),
-    package_data={
-        "pywtdlib": [
-            "lib/*",
-        ]
-    },
+    include_package_data=True,
     python_requires=">=3.6",
 )

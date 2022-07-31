@@ -1,5 +1,3 @@
 include README.md
 include LICENSE
-
-recursive-include pywtdlib *.py
 recursive-include pywtdlib/lib *
