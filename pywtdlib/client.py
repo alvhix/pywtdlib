@@ -1,6 +1,6 @@
 import logging
 from pywtdlib import __version__
-from typing import Any, Callable, Dict, Optional
+from typing import Any, Callable, Dict, Optional, List
 from getpass import getpass
 from pywtdlib.enum import AuthorizationState, Update
 from pywtdlib.tdjson import TdJson
@@ -64,7 +64,7 @@ class Client:
         self,
         chat_id: int,
         from_chat_id: int,
-        messages_ids: list[int],
+        messages_ids: List[int],
         options: Dict[Any, Any],
         send_copy: bool,
         remove_caption: bool,
