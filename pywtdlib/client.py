@@ -109,20 +109,18 @@ class Client:
                 self.tdjson.send(
                     {
                         "@type": "setTdlibParameters",
-                        "parameters": {
-                            "use_test_dc": self.use_test_dc,
-                            "database_directory": self.database_directory,
-                            "use_file_database": self.use_file_database,
-                            "use_chat_info_database": self.use_chat_info_database,
-                            "use_message_database": self.use_message_database,
-                            "use_secret_chats": self.use_secret_chats,
-                            "api_id": self.api_id,
-                            "api_hash": self.api_hash,
-                            "system_language_code": self.system_language,
-                            "device_model": self.device_model,
-                            "application_version": self.app_version,
-                            "enable_storage_optimizer": self.enable_storage_optimizer,
-                        },
+                        "use_test_dc": self.use_test_dc,
+                        "database_directory": self.database_directory,
+                        "use_file_database": self.use_file_database,
+                        "use_chat_info_database": self.use_chat_info_database,
+                        "use_message_database": self.use_message_database,
+                        "use_secret_chats": self.use_secret_chats,
+                        "api_id": self.api_id,
+                        "api_hash": self.api_hash,
+                        "system_language_code": self.system_language,
+                        "device_model": self.device_model,
+                        "application_version": self.app_version,
+                        "enable_storage_optimizer": self.enable_storage_optimizer,
                     }
                 )
                 self.logger.debug("TDLib parameters sent")
@@ -175,6 +173,31 @@ class Client:
                     }
                 )
                 self.logger.debug("Password sent")
+
+            # enter email address to log in
+            if auth_state["@type"] == AuthorizationState.WAIT_EMAIL_ADDRESS:
+                email_address = input("Please enter your email address: ")
+                self.tdjson.send(
+                    {
+                        "@type": "setAuthenticationEmailAddress",
+                        "email_address": email_address,
+                    }
+                )
+
+            # wait for email authorization code
+            if auth_state["@type"] == AuthorizationState.WAIT_EMAIL_CODE:
+                code = input(
+                    "Please enter the email authentication code you received: "
+                )
+                self.tdjson.send(
+                    {
+                        "@type": "checkAuthenticationEmailCode",
+                        "code": {
+                            "@type": "emailAddressAuthenticationCode",
+                            "code": "code",
+                        },
+                    }
+                )
 
             # user authenticated
             if auth_state["@type"] == AuthorizationState.READY:

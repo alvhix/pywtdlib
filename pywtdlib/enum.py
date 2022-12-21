@@ -6,6 +6,8 @@ class AuthorizationState(enumerate):
     WAIT_ENCRYPTION_KEY: str = "authorizationStateWaitEncryptionKey"
     WAIT_PHONE_NUMBER: str = "authorizationStateWaitPhoneNumber"
     WAIT_REGISTRATION: str = "authorizationStateWaitRegistration"
+    WAIT_EMAIL_ADDRESS: str = "authorizationStateWaitEmailAddress"
+    WAIT_EMAIL_CODE: str = "authorizationStateWaitEmailCode"
     READY: str = "authorizationStateReady"
     CLOSING: str = "authorizationStateClosing"
     CLOSED: str = "authorizationStateClosed"
