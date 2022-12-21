@@ -197,27 +197,29 @@ class Client:
     ) -> None:
         self.error_handler = error_handler
 
-    def start(self):
+    def execute(self):
         # start the client by sending request to it
         self.get_authorization_state()
 
+        # main events cycle
+        while True:
+            event = self.tdjson.receive()
+            if event:
+                if not self.authorized:
+                    self.authenticate_user(event)
+
+                if hasattr(self, "update_handler"):
+                    self.update_handler(event)
+
+                if event["@type"] == "error":
+                    self.error_handler(event)
+
+            if hasattr(self, "routine_handler"):
+                self.routine_handler()
+
+    def start(self):
         try:
-            # main events cycle
-            while True:
-                event = self.tdjson.receive()
-                if event:
-                    if not self.authorized:
-                        self.authenticate_user(event)
-
-                    if hasattr(self, "update_handler"):
-                        self.update_handler(event)
-
-                    if event["@type"] == "error":
-                        self.error_handler(event)
-
-                if hasattr(self, "routine_handler"):
-                    self.routine_handler()
-
+            self.execute()
         except KeyboardInterrupt:
             self.tdjson.stop()
             self.logger.info("Execution stopped by the user")
