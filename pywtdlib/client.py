@@ -92,115 +92,125 @@ class Client:
         event_encoded = str(event).encode("utf-8")
         self.logger.error(event_encoded)
 
+    def send_tdlib_parameters(self):
+        self.tdjson.send(
+            {
+                "@type": "setTdlibParameters",
+                "database_directory": self.database_directory,
+                "use_message_database": self.use_message_database,
+                "use_secret_chats": self.use_secret_chats,
+                "api_id": self.api_id,
+                "api_hash": self.api_hash,
+                "system_language_code": self.system_language,
+                "device_model": self.device_model,
+                "application_version": self.app_version,
+                "enable_storage_optimizer": self.enable_storage_optimizer,
+                "use_test_dc": self.use_test_dc,
+                "use_file_database": self.use_file_database,
+                "use_chat_info_database": self.use_chat_info_database,
+            }
+        )
+        self.logger.debug("TDLib parameters sent")
+
+    def send_phone_number(self):
+        phone_number = input("Please enter your phone number: ")
+        self.tdjson.send(
+            {
+                "@type": "setAuthenticationPhoneNumber",
+                "phone_number": phone_number,
+            }
+        )
+        self.logger.debug(f"Phone number sent: {phone_number}")
+
+    def send_auth_code(self):
+        code = input("Please enter the authentication code you received: ")
+        self.tdjson.send({"@type": "checkAuthenticationCode", "code": code})
+        self.logger.debug(f"Authentication code sent: {code}")
+
+    def register_user(self):
+        first_name = input("Please enter your first name: ")
+        last_name = input("Please enter your last name: ")
+        self.tdjson.send(
+            {
+                "@type": "registerUser",
+                "first_name": first_name,
+                "last_name": last_name,
+            }
+        )
+
+    def send_password(self):
+        password = getpass("Please enter your password: ")
+        self.tdjson.send(
+            {
+                "@type": "checkAuthenticationPassword",
+                "password": password,
+            }
+        )
+        self.logger.debug("Password sent")
+
+    def send_email(self):
+        email_address = input("Please enter your email address: ")
+        self.tdjson.send(
+            {
+                "@type": "setAuthenticationEmailAddress",
+                "email_address": email_address,
+            }
+        )
+
+    def send_email_code(self):
+        code = input("Please enter the email authentication code you received: ")
+        self.tdjson.send(
+            {
+                "@type": "checkAuthenticationEmailCode",
+                "code": {
+                    "@type": "emailAddressAuthenticationCode",
+                    "code": code,
+                },
+            }
+        )
+
     def authenticate_user(self, event: Dict[Any, Any]) -> None:
         # process authorization states
         if event["@type"] == AuthorizationState.AUTHORIZATION:
-            auth_state = event["authorization_state"]
+            auth_state = event["authorization_state"]["@type"]
 
             # if client is closed, we need to destroy it and create new client
-            if auth_state["@type"] == AuthorizationState.CLOSED:
+            if auth_state == AuthorizationState.CLOSED:
                 self.logger.critical(event)
                 raise ValueError(event)
 
             # set TDLib parameters
             # you MUST obtain your own api_id and api_hash at https://my.telegram.org
             # and use them in the setTdlibParameters call
-            if auth_state["@type"] == AuthorizationState.WAIT_TDLIB_PARAMETERS:
-                self.tdjson.send(
-                    {
-                        "@type": "setTdlibParameters",
-                        "use_test_dc": self.use_test_dc,
-                        "database_directory": self.database_directory,
-                        "use_file_database": self.use_file_database,
-                        "use_chat_info_database": self.use_chat_info_database,
-                        "use_message_database": self.use_message_database,
-                        "use_secret_chats": self.use_secret_chats,
-                        "api_id": self.api_id,
-                        "api_hash": self.api_hash,
-                        "system_language_code": self.system_language,
-                        "device_model": self.device_model,
-                        "application_version": self.app_version,
-                        "enable_storage_optimizer": self.enable_storage_optimizer,
-                    }
-                )
-                self.logger.debug("TDLib parameters sent")
-
-            # set an encryption key for database to let know TDLib how to open the database
-            if auth_state["@type"] == AuthorizationState.WAIT_ENCRYPTION_KEY:
-                self.tdjson.send(
-                    {
-                        "@type": "checkDatabaseEncryptionKey",
-                        "encryption_key": "",
-                    }
-                )
+            if auth_state == AuthorizationState.WAIT_TDLIB_PARAMETERS:
+                self.send_tdlib_parameters()
 
             # enter phone number to log in
-            if auth_state["@type"] == AuthorizationState.WAIT_PHONE_NUMBER:
-                phone_number = input("Please enter your phone number: ")
-                self.tdjson.send(
-                    {
-                        "@type": "setAuthenticationPhoneNumber",
-                        "phone_number": phone_number,
-                    }
-                )
-                self.logger.debug(f"Phone number sent: {phone_number}")
+            if auth_state == AuthorizationState.WAIT_PHONE_NUMBER:
+                self.send_phone_number()
 
             # wait for authorization code
-            if auth_state["@type"] == AuthorizationState.WAIT_CODE:
-                code = input("Please enter the authentication code you received: ")
-                self.tdjson.send({"@type": "checkAuthenticationCode", "code": code})
-                self.logger.debug(f"Authentication code sent: {code}")
+            if auth_state == AuthorizationState.WAIT_CODE:
+                self.send_auth_code()
 
             # wait for first and last name for new users
-            if auth_state["@type"] == AuthorizationState.WAIT_REGISTRATION:
-                first_name = input("Please enter your first name: ")
-                last_name = input("Please enter your last name: ")
-                self.tdjson.send(
-                    {
-                        "@type": "registerUser",
-                        "first_name": first_name,
-                        "last_name": last_name,
-                    }
-                )
+            if auth_state == AuthorizationState.WAIT_REGISTRATION:
+                self.register_user()
 
             # wait for password if present
-            if auth_state["@type"] == AuthorizationState.WAIT_PASSWORD:
-                password = getpass("Please enter your password: ")
-                self.tdjson.send(
-                    {
-                        "@type": "checkAuthenticationPassword",
-                        "password": password,
-                    }
-                )
-                self.logger.debug("Password sent")
+            if auth_state == AuthorizationState.WAIT_PASSWORD:
+                self.send_password()
 
             # enter email address to log in
-            if auth_state["@type"] == AuthorizationState.WAIT_EMAIL_ADDRESS:
-                email_address = input("Please enter your email address: ")
-                self.tdjson.send(
-                    {
-                        "@type": "setAuthenticationEmailAddress",
-                        "email_address": email_address,
-                    }
-                )
+            if auth_state == AuthorizationState.WAIT_EMAIL_ADDRESS:
+                self.send_email()
 
             # wait for email authorization code
-            if auth_state["@type"] == AuthorizationState.WAIT_EMAIL_CODE:
-                code = input(
-                    "Please enter the email authentication code you received: "
-                )
-                self.tdjson.send(
-                    {
-                        "@type": "checkAuthenticationEmailCode",
-                        "code": {
-                            "@type": "emailAddressAuthenticationCode",
-                            "code": "code",
-                        },
-                    }
-                )
+            if auth_state == AuthorizationState.WAIT_EMAIL_CODE:
+                self.send_email_code()
 
             # user authenticated
-            if auth_state["@type"] == AuthorizationState.READY:
+            if auth_state == AuthorizationState.READY:
                 # get all chats
                 self.get_all_chats()
 
